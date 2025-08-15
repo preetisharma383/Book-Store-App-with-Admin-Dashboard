@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start":"npm install",
-    "dev": "node index.js"
+    "start":"node index.js",
+    "dev": "npm install && cd .. && cd frontend  && npm install && npm run dev"
   },
   "keywords": [],
   "author": "",
