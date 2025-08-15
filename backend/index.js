@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-
 const mongoose = require("mongoose");
 const port = process.env.PORT || 5000;
 require('dotenv').config()
@@ -16,7 +15,7 @@ app.use(cors({
 // routes
 const bookRoutes = require('./src/books/book.route');
 const orderRoutes = require("./src/orders/order.route")
-const userRoutes =  require("./src/users/user.route")
+const userRoutes = require("./src/users/user.route")
 const adminRoutes = require("./src/stats/admin.stats")
 
 app.use("/api/books", bookRoutes)
@@ -24,15 +23,22 @@ app.use("/api/orders", orderRoutes)
 app.use("/api/auth", userRoutes)
 app.use("/api/admin", adminRoutes)
 
-async function main() {
-  await mongoose.connect(process.env.DB_URL);
-  app.use("/", (req, res) => {
+// Define the root route here, before the server starts listening
+app.get("/", (req, res) => {
     res.send("Book Store Server is running!");
-  });
+});
+
+async function main() {
+    try {
+        await mongoose.connect(process.env.DB_URL);
+        console.log("Mongodb connect successfully!");
+    } catch (err) {
+        console.log(err);
+    }
 }
 
-main().then(() => console.log("Mongodb connect successfully!")).catch(err => console.log(err));
+main();
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+    console.log(`Example app listening on port ${port}`);
 });
